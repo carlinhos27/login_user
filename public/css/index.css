@@ -1,0 +1,35 @@
+/* estilos.css */
+
+body {
+    background: linear-gradient(135deg, #f1f1f1 25%, transparent 25%) -50px 0,
+        linear-gradient(225deg, #f1f1f1 25%, transparent 25%) -50px 0,
+        linear-gradient(315deg, #f1f1f1 25%, transparent 25%),
+        linear-gradient(45deg, #f1f1f1 25%, transparent 25%);
+    background-size: 100px 100px;
+    background-color: #fff;
+}
+
+.dashboard-bg {
+    background: linear-gradient(135deg, #e8e8e8 25%, transparent 25%) -50px 0,
+        linear-gradient(225deg, #e8e8e8 25%, transparent 25%) -50px 0,
+        linear-gradient(315deg, #e8e8e8 25%, transparent 25%),
+        linear-gradient(45deg, #e8e8e8 25%, transparent 25%);
+    background-size: 100px 100px;
+    background-color: #f1f1f1;
+    padding: 50px 0;
+}
+
+.dashboard-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
