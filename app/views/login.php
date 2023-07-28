@@ -7,7 +7,6 @@
         <div class="row justify-content-center">
             <div class="col-md-4 col-sm-6">
                 <div class="form-container text-center">
-                    <h3 class="title">Inicio de Sesión</h3>
                     <form action="iniciarsesion" method="POST" class="form-horizontal my-form">
                         <div class="form-icon">
                             <i class="fa fa-user-circle"></i>

@@ -20,7 +20,7 @@ $nav_links = [
 $current_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
 $current_url = strval($current_url);
 $url = isset($_GET['url']) ? $_GET['url'] : '/';
-$url = '/calendario/public/'.$url;
+$url = '/calendario/public/' . $url;
 $url = strval($url);
 ?>
 
@@ -46,14 +46,22 @@ $url = strval($url);
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav mr-auto">
                         <?php foreach ($nav_links as $link) : ?>
-                            <li class="nav-item <?php if (strpos($current_url, $link['route']) !== false) { echo 'active'; } ?>">
+                            <li class="nav-item <?php if (strpos($current_url, $link['route']) !== false) {
+                                                    echo 'active';
+                                                } ?>">
                                 <a class="nav-link" href="<?php echo $link['route']; ?>" data-route="<?php echo $link['route']; ?>">
                                     <?php echo $link['name']; ?>
                                 </a>
                             </li>
                         <?php endforeach; ?>
+                      
                     </ul>
                 </div>
+                <ul class="navbar-nav ml-md-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="logout">Cerrar Sesion <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
             <?php } ?>
         </nav>
     </header>

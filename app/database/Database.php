@@ -1,15 +1,15 @@
 <?php
-// app/models/Database.php
+// app/database/Database.php
 
 class Database
 {
     private static $connection = null;
 
-    public static function getConnection($configName = 'usuarios')
+    public static function getConnection($configName = 'default')
     {
-         $databaseConfig = require '../config/database.php';
+        $databaseConfig = require '../config/database.php';
 
-          if (!isset($databaseConfig[$configName])) {
+        if (!isset($databaseConfig[$configName])) {
             die('Error: La configuración especificada no existe.');
         }
 
@@ -30,4 +30,23 @@ class Database
 
         return self::$connection;
     }
+
+    // Método para ejecutar una consulta SQL
+    public function query($query)
+    {
+        try {
+            $stmt = self::$connection->prepare($query);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            die('Error en la consulta: ' . $e->getMessage());
+        }
+    }
+
+    // Método para obtener el último ID insertado
+    public function lastInsertId()
+    {
+        return self::$connection->lastInsertId();
+    }
 }
+?>

@@ -1,6 +1,6 @@
 <?php
 // app/models/UsuarioModel.php
-require_once 'Database.php';
+require_once '..database/Database.php';
 
 class UsuarioModel
 {

@@ -1,0 +1,89 @@
+Manual de Uso - Sistema de Calendario y Actividades
+
+1. Estructura del Sistema:
+El sistema está organizado en una estructura de archivos MVC (Model-View-Controller) para mantener una separación clara de la lógica de negocio, la presentación y la interacción con la base de datos. A continuación, se describe la estructura del sistema:
+
+app/controllers: Esta carpeta contiene los controladores de la aplicación. Cada controlador se encarga de manejar las solicitudes del usuario y coordinar las respuestas adecuadas.
+
+app/database: Aquí se encuentra el archivo QueryBuilder.php, que contiene la clase QueryBuilder para construir y ejecutar consultas SQL genéricas.
+
+app/helpers: En esta carpeta se encuentra el archivo database_helpers.php, que contiene funciones adicionales para gestionar relaciones uno a muchos y muchos a muchos en la base de datos.
+
+app/models: Contiene los modelos de la aplicación. Cada modelo representa una tabla de la base de datos y se utiliza para interactuar con los datos.
+
+app/views: Aquí se encuentran las vistas de la aplicación, que muestran la información al usuario. Cada vista está asociada a un controlador y presenta la información de manera adecuada.
+
+config: En esta carpeta se encuentra el archivo database.php, que contiene la configuración de acceso a la base de datos. También puede contener otros archivos de configuración si es necesario.
+
+public: Contiene archivos públicos, como hojas de estilo CSS, archivos JavaScript y archivos de inclusión (header y footer) que se utilizan en las vistas.
+
+2. Configuración de la Base de Datos:
+En el archivo config/database.php, se pueden configurar múltiples bases de datos, cada una con su propio conjunto de credenciales. Puedes agregar más opciones de acceso en este archivo si es necesario. La configuración se realiza mediante un arreglo asociativo, donde cada clave representa un nombre de configuración y sus valores son los detalles de conexión (host, nombre de la base de datos, usuario y contraseña).
+
+3. Clase Database:
+En el archivo models/Database.php, se encuentra la clase Database, que proporciona una conexión a la base de datos mediante PDO (PHP Data Objects). Esta clase se encarga de establecer una conexión única con la base de datos y permite reutilizar esa conexión en toda la aplicación.
+
+4. Clase QueryBuilder:
+El archivo database/QueryBuilder.php contiene la clase QueryBuilder, que se utiliza para construir y ejecutar consultas SQL genéricas. Puedes utilizar esta clase para realizar consultas SELECT, INSERT, UPDATE o DELETE en la base de datos de manera segura y conveniente. La clase es flexible y puede encadenarse para construir consultas más complejas.
+
+5. Funciones Helper:
+En el archivo helpers/database_helpers.php, se encuentran las funciones guardarUnoAMuchos y guardarMuchosAMuchos, que son útiles para gestionar relaciones uno a muchos y muchos a muchos en la base de datos. Puedes utilizar estas funciones para guardar relaciones entre registros en diferentes tablas de manera sencilla.
+
+6. Utilizando el QueryBuilder:
+Para utilizar la clase QueryBuilder, primero debes crear una instancia de ella en el controlador correspondiente. Luego, puedes encadenar los métodos para construir la consulta deseada. Por ejemplo:
+
+p
+// Crear una instancia del QueryBuilder
+$queryBuilder = new QueryBuilder();
+
+// Ejemplo de consulta SELECT
+$resultado = $queryBuilder->select('nombre, apellido')
+                         ->from('usuarios')
+                         ->where('id = :id', [':id' => 1])
+                         ->execute();
+
+// Ejemplo de consulta INSERT
+$queryBuilder->from('usuarios')
+             ->insert(['nombre' => 'Juan', 'apellido' => 'Pérez'])
+             ->execute();
+
+7. Utilizando las Funciones Helper:
+Para utilizar las funciones guardarUnoAMuchos y guardarMuchosAMuchos, simplemente llámalas desde el controlador con los parámetros adecuados. Por ejemplo:
+
+
+// Guardar relación uno a muchos
+guardarUnoAMuchos('usuarios', 1, 'actividades', 'nombre_actividad', ['Actividad 1', 'Actividad 2']);
+
+// Guardar relación muchos a muchos
+guardarMuchosAMuchos('usuarios', 1, 'actividades', 'id_usuario', 'id_actividad', [1, 2, 3]);
+
+8. Protección contra Inyección de SQL:
+Una de las ventajas de utilizar el QueryBuilder y las funciones Helper es que ayudan a prevenir la inyección de SQL, ya que utilizan sentencias preparadas para ejecutar las consultas. Las sentencias preparadas son consultas parametrizadas que separan los datos de las consultas SQL, lo que evita que los datos del usuario se mezclen directamente con la consulta.
+
+Por ejemplo, en el siguiente código:
+
+
+$queryBuilder = new QueryBuilder();
+$resultado = $queryBuilder->select('nombre, apellido')
+                         ->from('usuarios')
+                         ->where('id = :id', [':id' => 1])
+                         ->execute();
+El valor 1 se pasa como un parámetro en la sentencia preparada, y no se concatena directamente en la consulta. Esto hace que la consulta sea más segura y previene ataques de inyección de SQL.
+
+9. Implementación de la Autenticación de Usuarios:
+Para implementar el inicio de sesión y registro de usuarios, puedes utilizar el modelo UsuarioModel.php, que debe estar en la carpeta models. El modelo UsuarioModel debe tener métodos para registrar nuevos usuarios en la base de datos y para verificar las credenciales de inicio de sesión.
+
+10. Relaciones Uno a Muchos y Muchos a Muchos:
+Puedes utilizar las funciones guardarUnoAMuchos y guardarMuchosAMuchos para establecer relaciones entre registros en diferentes tablas. Por ejemplo, para asignar actividades a un usuario, puedes utilizar guardarUnoAMuchos para guardar la relación uno a muchos entre la tabla usuarios y la tabla actividades. Para establecer una relación muchos a muchos entre dos tablas, utiliza la función guardarMuchosAMuchos.
+
+11. Archivos de Inclusión:
+En la carpeta public, se encuentran los archivos de inclusión header.php y footer.php, que se incluyen en las vistas para tener una estructura consistente en todas las páginas del sitio web. Puedes agregar elementos comunes, como el encabezado de navegación, en header.php y el pie de página en footer.php.
+
+12. Protección de Rutas y Acceso a Páginas:
+Puedes implementar la protección de rutas y acceso a páginas utilizando sesiones y controladores. Por ejemplo, si tienes páginas que solo deben ser accesibles para usuarios autenticados, puedes verificar si el usuario ha iniciado sesión en el controlador correspondiente antes de cargar la vista.
+
+13. Mejoras Futuras:
+Puedes continuar mejorando y ampliando el sistema agregando nuevas funcionalidades, como la gestión de actividades y eventos en el calendario, la asignación de tareas, la posibilidad de editar y eliminar registros, etc.
+
+14. Seguridad:
+Recuerda siempre validar y filtrar los datos ingresados por los usuarios antes de insertarlos en la base de datos para prevenir ataques maliciosos. También es recomendable utilizar contraseñas seguras y técnicas de almacenamiento seguro para las contraseñas, como el hash de contraseñas.

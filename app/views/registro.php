@@ -8,7 +8,6 @@
         <div class="row justify-content-center">
             <div class="col-md-4 col-sm-6">
                 <div class="form-container text-center">
-                    <h1>Registro de Usuario</h1>
                     <form action="registrar" method="POST" class="form-horizontal my-form">
                         <div class="form-icon">
                             <i class="fa fa-user-circle"></i>
